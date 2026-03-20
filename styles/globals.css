@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+@source "./app/**/*.{js,ts,jsx,tsx,mdx}";
+@source "./components/**/*.{js,ts,jsx,tsx,mdx}";
+@source "./src/**/*.{js,ts,jsx,tsx,mdx}";
+
+:root {
+    --background: #ffffff;
+    --foreground: #171717;
+}
+
+@theme {
+    /* Fonts (wired to next/font variables you add on <body>) */
+    --font-sans: var(--font-nunito-sans);
+    --font-mono: var(--font-nunito);
+    --font-display: var(--font-nunito), Cinzel, ui-serif, Georgia, serif;
+
+    /* ===== Light defaults ===== */
+    --color-bg: #f7f8fb;
+    --color-surface: #ffffff;
+    --color-elevated: #f1f3f8;
+
+    --color-ink-100: #0b1220;
+    --color-ink-300: #38465a;
+    --color-ink-500: #607089;
+
+    /* Golds (stars/accents) */
+    --color-gold-300: #fde68a;
+    --color-gold-400: #ffd166;
+    --color-gold-500: #f5c84c; /* main star gold */
+    --color-gold-700: #9e7c2a;
+
+    /* Warm accents */
+    --color-ember-500: #fb923c;
+    --color-amber-600: #f59e0b;
+
+    /* FIX: you had coral duplicated; keep one */
+    --color-coral-500: #d84226;
+
+    /* Cool accents */
+    --color-aurora-400: #00bcd4;
+    --color-teal-400: #2dd4bf;
+    --color-purple-600: #311b92;
+    --color-purple-500: #673ab7;
+    --color-purple-400: #5856d6;
+    --color-pink-500: #ad1457;
+    --color-pink-400: #e91e63;
+    /* --color-pink-200: #f8bbd0; */
+
+    /* FIX: use consistent casing */
+    --color-gray-500: #9aa4b2;
+    --color-gray-600: #6b7280;
+    --color-gray-800: #111827;
+    --color-griy-900: #0e1621;
+    --color-griy-950: #424242;
+
+    /* Status */
+    --color-success-500: #16a34a;
+    --color-warning-500: #f59e0b;
+    --color-danger-500: #ef4444;
+    --color-info-500: #38bdf8;
+
+    /* Shadows */
+    --shadow-gold: 0 0 24px rgba(245, 200, 76, 0.25);
+    --shadow-gold-lg: 0 0 36px rgba(245, 200, 76, 0.35);
+}
+
+@layer components {
+    .surface {
+        background-color: color-mix(
+            in oklab,
+            var(--color-surface) 88%,
+            black 12%
+        );
+        @apply rounded-2xl border border-white/5 backdrop-blur-sm;
+    }
+
+    .card {
+        @apply rounded-2xl;
+    }
+
+    .btn {
+        @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 font-medium transition cursor-pointer w-full;
+    }
+
+    .btn-theme {
+        @apply h-8 w-8 rounded-full cursor-pointer;
+    }
+
+    .btn-primary {
+        @apply bg-black text-white border;
+    }
+    .btn-secondary {
+        @apply bg-white text-black border;
+    }
+
+    .btn-danger {
+        @apply bg-red-500 text-white;
+    }
+
+    .btn-danger:hover {
+        @apply bg-red-600 translate-y-0.5;
+    }
+
+    .btn-primary:hover {
+        /* box-shadow: var(--shadow-gold-lg); */
+        transform: translateY(-0.5px);
+    }
+
+    .btn-ghost {
+        @apply border border-white/10 text-ink-100;
+        background: transparent;
+    }
+    .btn-ghost:hover {
+        background: rgba(255, 255, 255, 0.04);
+    }
+    /*
+    .headline-gradient {
+        @apply text-transparent bg-clip-text bg-gold-gradient;
+    }*/
+
+    /*.logo-mark {
+        @apply font-display font-black tracking-[0.06em] leading-none text-transparent bg-clip-text bg-gold-gradient text-shadow-gold;
+    }*/
+    .body-text {
+        @apply font-sans;
+    }
+
+    /* 1) The input never shows border/ring/outline (any state) */
+    .input {
+        @apply w-full border border-gray-500   outline-none ring-0 shadow-none h-full px-4 py-3 rounded-lg;
+    }
+
+    .iput {
+        @apply w-full border-0   outline-none ring-0 shadow-none h-full;
+    }
+
+    .iput:focus,
+    .iput:focus-visible,
+    .iput:active {
+        @apply outline-none ring-0 shadow-none;
+    }
+
+    /* If your project has browser-specific inner shadows (Safari/Chrome autofill) */
+    .input:-webkit-autofill {
+        -webkit-text-fill-color: var(--color-ink-100);
+        transition: background-color 9999s ease-in-out 0s;
+        box-shadow: 0 0 0px 1000px transparent inset;
+    }
+
+    /* 2) Parent gets the border when any child (input) is focused */
+    .input-wrap {
+        @apply rounded-lg border border-white/10  transition;
+    }
+
+    .input-wrap:focus-within {
+        @apply border-white/25;
+        /* optional "focus glow" */
+        box-shadow: 0 0 0 3px #121212;
+    }
+
+    .input-wrap--error {
+        border-color: rgba(239, 68, 68, 0.45); /* danger */
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+    }
+}
+
+body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-nunito), Arial, Helvetica, sans-serif;
+}

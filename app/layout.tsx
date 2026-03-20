@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { Nunito, Nunito_Sans } from "next/font/google";
+import "@/styles/globals.css";
+import MainLayout from "@/components/ui/layouts/main-layout";
+import { Toaster } from "react-hot-toast";
+import QueryProviders from "@/contexts/query-provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const nunitoSans = Nunito_Sans({
+  variable: "--font-nunito-sans",
   subsets: ["latin"],
 });
 
@@ -24,10 +27,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${nunito.variable} ${nunitoSans.variable} antialiased`}>
+        <QueryProviders>
+          <MainLayout>{children}</MainLayout>
+        </QueryProviders>
+        <Toaster
+          toastOptions={{
+            style: {
+              fontSize: "12px",
+              fontWeight: "700",
+            },
+
+            success: {
+              iconTheme: {
+                primary: "black",
+                secondary: "white",
+              },
+            },
+          }}
+          containerStyle={{ zIndex: 2147483647 }}
+        />
       </body>
     </html>
   );

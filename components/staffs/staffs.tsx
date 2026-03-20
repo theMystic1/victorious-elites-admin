@@ -1,0 +1,143 @@
+"use client";
+
+import { useStaffs } from "@/hooks/useStaffs";
+import {
+  Table,
+  TableHeader,
+  TableOverflow,
+  Tbody,
+  Td,
+  Th,
+  Tr,
+} from "../ui/reusables/table";
+import { METype } from "@/utils/types";
+import RowActionsMenuPortal from "../ui/reusables/table-menu";
+import { useState } from "react";
+import StaffsModal from "./staffs-modal";
+import { DeleteConfirmModal } from "../students/students-modal";
+import { deleteStaff } from "@/lib/api/endpoints/auth";
+import useMe from "@/hooks/useMe";
+import AdminDashboardSkeleton from "@/app/loading";
+
+const Staffs = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [editStaff, setEditStaff] = useState<METype | null>(null);
+
+  const { staffsData, isLoadingStaff, refetchStaffs } = useStaffs();
+  const { me, isLoadingMe } = useMe();
+
+  if (isLoadingStaff || isLoadingMe) return <AdminDashboardSkeleton />;
+  if (!staffsData) return <div>No staffs found.</div>;
+
+  const staffs: METype[] = staffsData?.staffs;
+  const curUser: METype = me?.user;
+
+  // console.log(me);
+
+  return (
+    <div>
+      <TableOverflow>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-xl font-black">Staffs Table</h1>
+          <div className="flex items-center gap-2">
+            <button className="btn btn-primary" onClick={() => setOpen(true)}>
+              + New Staff
+            </button>
+          </div>
+        </div>
+        <Table>
+          <TableHeader>
+            <Tr>
+              <Th>Name</Th>
+              <Th>Email</Th>
+              <Th>Phone Number</Th>
+              <Th>Role</Th>
+
+              <Th>Actions</Th>
+            </Tr>
+          </TableHeader>
+          <Tbody>
+            {staffs.map((staff, index) => (
+              <Tr key={staff._id}>
+                <Td>
+                  {staff.firstName} {staff.lastName}{" "}
+                  {staff._id === curUser?._id && (
+                    <span className="text-sm text-gray-500">(You)</span>
+                  )}
+                </Td>
+                <Td>{staff?.email}</Td>
+                <Td>{staff?.phoneNumber ?? "_____"}</Td>
+                <Td>{staff.role}</Td>
+                <Td>
+                  {/*<div>
+                    <button className="btn">
+
+                    </button>
+                  </div>*/}
+
+                  <RowActionsMenuPortal
+                    actions={[
+                      // {
+                      //   label: "View",
+                      //   onClick: () => router.push(`/students/${student._id}`),
+                      // },
+                      {
+                        label: "Edit",
+                        onClick: () => {
+                          setIsEditing(true);
+                          setEditStaff(staff);
+                        },
+                        disabled: staff._id === curUser?._id,
+                      },
+                      {
+                        label: "Delete",
+                        onClick: () => {
+                          setOpenDelete(true);
+                          setEditStaff(staff);
+                        },
+                        disabled: staff._id === curUser?._id,
+                      },
+                    ]}
+                  />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+
+        <StaffsModal
+          open={open || isEditing}
+          onClose={() => {
+            setOpen(false);
+            setIsEditing(false);
+            setEditStaff(null);
+          }}
+          isEdit={isEditing}
+          editStaff={editStaff!}
+          refetchStaff={refetchStaffs}
+        />
+
+        <DeleteConfirmModal
+          open={openDelete}
+          onClose={() => {
+            setOpenDelete(false);
+            setEditStaff(null);
+          }}
+          item="Staff"
+          refetch={refetchStaffs}
+          studentId={editStaff?._id as string}
+          onDeleteAction={async (id) => {
+            await deleteStaff(id);
+            refetchStaffs();
+
+            setEditStaff(null);
+          }}
+        />
+      </TableOverflow>
+    </div>
+  );
+};
+
+export default Staffs;
