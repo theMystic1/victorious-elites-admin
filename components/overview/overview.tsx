@@ -16,6 +16,9 @@ import {
 } from "../ui/reusables/table";
 import Modal from "../ui/modal";
 import { useState } from "react";
+import Staffs from "../staffs/staffs";
+import { useDashboard } from "@/hooks/useDashboard";
+import AdminDashboardSkeleton from "@/app/loading";
 
 const dummydata = [
   {
@@ -45,47 +48,15 @@ const dummydata = [
   },
 ];
 
-const dummyStaffs: METype[] = [
-  {
-    email: "nnamezie@mail.ru",
-    firstName: "Chukwunonso",
-    lastName: "Nnamezie",
-    role: "STAFF",
-    gender: "MALE",
-  },
-  {
-    email: "chukwunonso@mail.ru",
-    firstName: "Mary",
-    lastName: "Reginald",
-    role: "STAFF",
-    gender: "FEMALE",
-  },
-  {
-    email: "cally@mail.ru",
-    firstName: "Cally",
-    lastName: "Joshua",
-    role: "STAFF",
-    gender: "MALE",
-  },
-  {
-    email: "staff@mail.ru",
-    firstName: "Staff",
-    lastName: "Kinky",
-    role: "STAFF",
-    gender: "MALE",
-  },
-  {
-    email: "jinky@mail.ru",
-    firstName: "Jinky",
-    lastName: "Reginald",
-    role: "STAFF",
-    gender: "FEMALE",
-  },
-];
-
 const Overview = () => {
   const [open, setOpen] = useState(false);
 
+  const { dashboardStats, isLoadingStats } = useDashboard();
+
+  if (isLoadingStats) return <AdminDashboardSkeleton />;
+
+  const cards = dashboardStats?.data?.cards;
+  // console.log(cards);
   return (
     <div className="flex flex-col gap-6">
       <Modal
@@ -107,45 +78,26 @@ const Overview = () => {
                 <item.icon className="" size={20} />
               </div>
               <p className="mt-2 text-sm font-bold">{item.name}</p>
-              <p className="text-lg font-bold">{item.value}</p>
+              <p className="text-lg font-bold">
+                {item.name === "Total Students"
+                  ? (cards?.totalStudents ?? 0)
+                  : item.name === "Total Staffs"
+                    ? (cards?.totalStaffs ?? 0)
+                    : item.name === "Current session"
+                      ? cards?.currentSession?.label || "N/A"
+                      : item.name === "Current term"
+                        ? cards?.currentTerm
+                          ? `${cards?.currentTerm?.label} Term`
+                          : "N/A"
+                        : item.value}
+              </p>
             </div>
           </Card>
         ))}
       </div>
 
       {/*STAFFS TABLE*/}
-      <TableOverflow>
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-black">Staffs Table</h1>
-          <div>
-            <button className="btn btn-primary" onClick={() => setOpen(true)}>
-              View All
-            </button>
-          </div>
-        </div>
-        <Table>
-          <TableHeader>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Email</Th>
-              <Th>Role</Th>
-              <Th>Gender</Th>
-            </Tr>
-          </TableHeader>
-          <Tbody>
-            {dummyStaffs.map((staff, index) => (
-              <Tr key={index}>
-                <Td>
-                  {staff.firstName} {staff.lastName}
-                </Td>
-                <Td>{staff.email}</Td>
-                <Td>{staff.role}</Td>
-                <Td>{staff.gender}</Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableOverflow>
+      <Staffs page="overview" />
     </div>
   );
 };

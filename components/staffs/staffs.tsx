@@ -18,8 +18,11 @@ import { DeleteConfirmModal } from "../students/students-modal";
 import { deleteStaff } from "@/lib/api/endpoints/auth";
 import useMe from "@/hooks/useMe";
 import AdminDashboardSkeleton from "@/app/loading";
+import Empty from "../ui/reusables/empty";
+import { useRouter } from "next/navigation";
+import Pagination from "../ui/reusables/pagination";
 
-const Staffs = () => {
+const Staffs = ({ page }: { page: "staff" | "overview" }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -28,13 +31,15 @@ const Staffs = () => {
   const { staffsData, isLoadingStaff, refetchStaffs } = useStaffs();
   const { me, isLoadingMe } = useMe();
 
+  const router = useRouter();
+
   if (isLoadingStaff || isLoadingMe) return <AdminDashboardSkeleton />;
   if (!staffsData) return <div>No staffs found.</div>;
 
-  const staffs: METype[] = staffsData?.staffs;
+  const staffs: METype[] = staffsData?.data?.staffs;
   const curUser: METype = me?.user;
 
-  // console.log(me);
+  // console.log(staffsData);
 
   return (
     <div>
@@ -42,70 +47,92 @@ const Staffs = () => {
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-xl font-black">Staffs Table</h1>
           <div className="flex items-center gap-2">
-            <button className="btn btn-primary" onClick={() => setOpen(true)}>
-              + New Staff
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                if (page === "staff") setOpen(true);
+                else router.push("/staffs");
+              }}
+            >
+              {page === "staff" ? "   + New Staff" : "View All"}
             </button>
           </div>
         </div>
-        <Table>
-          <TableHeader>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Email</Th>
-              <Th>Phone Number</Th>
-              <Th>Role</Th>
+        {!staffs.length ? (
+          <Empty
+            title="No staffs found"
+            description="No staffs found on your database."
+          />
+        ) : (
+          <Table>
+            <TableHeader>
+              <Tr>
+                <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>Phone Number</Th>
+                <Th>Role</Th>
 
-              <Th>Actions</Th>
-            </Tr>
-          </TableHeader>
-          <Tbody>
-            {staffs.map((staff, index) => (
-              <Tr key={staff._id}>
-                <Td>
-                  {staff.firstName} {staff.lastName}{" "}
-                  {staff._id === curUser?._id && (
-                    <span className="text-sm text-gray-500">(You)</span>
-                  )}
-                </Td>
-                <Td>{staff?.email}</Td>
-                <Td>{staff?.phoneNumber ?? "_____"}</Td>
-                <Td>{staff.role}</Td>
-                <Td>
-                  {/*<div>
-                    <button className="btn">
-
-                    </button>
-                  </div>*/}
-
-                  <RowActionsMenuPortal
-                    actions={[
-                      // {
-                      //   label: "View",
-                      //   onClick: () => router.push(`/students/${student._id}`),
-                      // },
-                      {
-                        label: "Edit",
-                        onClick: () => {
-                          setIsEditing(true);
-                          setEditStaff(staff);
-                        },
-                        disabled: staff._id === curUser?._id,
-                      },
-                      {
-                        label: "Delete",
-                        onClick: () => {
-                          setOpenDelete(true);
-                          setEditStaff(staff);
-                        },
-                        disabled: staff._id === curUser?._id,
-                      },
-                    ]}
-                  />
-                </Td>
+                {page === "staff" ? <Th>Actions</Th> : null}
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
+            </TableHeader>
+            <Tbody>
+              {staffs.map((staff, index) => (
+                <Tr key={staff._id}>
+                  <Td>
+                    {staff.firstName} {staff.lastName}{" "}
+                    {staff._id === curUser?._id && (
+                      <span className="text-sm text-gray-500">(You)</span>
+                    )}
+                  </Td>
+                  <Td>{staff?.email}</Td>
+                  <Td>{staff?.phoneNumber ?? "_____"}</Td>
+                  <Td>{staff.role}</Td>
+                  {page === "staff" ? (
+                    <Td>
+                      {/*<div>
+                      <button className="btn">
+
+                      </button>
+                    </div>*/}
+
+                      <RowActionsMenuPortal
+                        actions={[
+                          // {
+                          //   label: "View",
+                          //   onClick: () => router.push(`/students/${student._id}`),
+                          // },
+                          {
+                            label: "Edit",
+                            onClick: () => {
+                              setIsEditing(true);
+                              setEditStaff(staff);
+                            },
+                            disabled: staff._id === curUser?._id,
+                          },
+                          {
+                            label: "Delete",
+                            onClick: () => {
+                              setOpenDelete(true);
+                              setEditStaff(staff);
+                            },
+                            disabled: staff._id === curUser?._id,
+                          },
+                        ]}
+                      />
+                    </Td>
+                  ) : null}
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        )}
+
+        <Pagination
+          paramName="page"
+          limitParamName="limit"
+          meta={staffsData?.pagination}
+          className="mt-8"
+        />
 
         <StaffsModal
           open={open || isEditing}

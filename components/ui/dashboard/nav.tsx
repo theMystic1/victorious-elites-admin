@@ -3,32 +3,56 @@
 import { navItems } from "@/lib/helpers/constants";
 import Logo from "../reusables/logo";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { METype } from "@/utils/types";
 import { Cols, Row } from "../reusables/cols-rows";
 import { getInitials } from "@/lib/helpers/helper";
 import useMe from "@/hooks/useMe";
+import { CustomButton } from "../reusables/custom-btn";
+import { GrLogout } from "react-icons/gr";
+import { removeCookie } from "@/lib/helpers/helper";
 
 export const DashboardNav = () => {
   const pathname = usePathname();
 
-  return (
-    <aside className="w-full flex flex-col gap-4 sticky inset-0 py-8 px-3">
-      <div className="flex flex-col items-center gap-0 lg:mb-12">
-        <Logo size="md" />
-        <h2 className="text-xl font-black">Victorious Elites</h2>
-      </div>
+  const router = useRouter();
 
-      {navItems.map((nav) => (
-        <Link
-          href={nav.href}
-          key={nav.label}
-          className={`${pathname?.replace("/class", "") === nav.href ? "bg-black text-white" : "hover:bg-gray-100 hover:text-black transition-all duration-300"} py-2 px-4 rounded-lg flex items-center gap-2`}
+  const handleLogout = () => {
+    removeCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN!);
+
+    router.push("/login");
+  };
+
+  return (
+    <aside className="w-full flex flex-col gap-4 fixed left-0 top-0 bottom-0  py-8 px-3">
+      <Cols className="justify-between h-full">
+        <Cols>
+          <div className="flex flex-col items-center gap-0 lg:mb-12 sticky  max-w-56">
+            <Logo size="md" />
+            <h2 className="text-xl font-black">Victorious Elites</h2>
+          </div>
+
+          {navItems.map((nav) => (
+            <Link
+              href={nav.href}
+              key={nav.label}
+              className={`${pathname?.replace("/class", "") === nav.href || pathname?.replace("/subject", "") === nav.href ? "bg-black text-white" : "hover:bg-gray-100 hover:text-black transition-all duration-300"} py-2 px-4 rounded-lg flex items-center max-w-54 gap-2`}
+            >
+              <nav.ICON className="w-5 h-5" />
+              <span className="flex items-center gap-2"> {nav.label}</span>
+            </Link>
+          ))}
+        </Cols>
+
+        <CustomButton
+          variant="danger"
+          className="w-40 flex items-center gap-2"
+          onClick={handleLogout}
         >
-          <nav.ICON className="w-5 h-5" />
-          <span className="flex items-center gap-2"> {nav.label}</span>
-        </Link>
-      ))}
+          <GrLogout />
+          <span>Logout</span>
+        </CustomButton>
+      </Cols>
     </aside>
   );
 };

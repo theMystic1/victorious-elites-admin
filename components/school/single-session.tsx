@@ -12,6 +12,7 @@ import { toApiError } from "@/utils/api-error";
 import toast from "react-hot-toast";
 import { activateSession } from "@/lib/api/endpoints/school";
 import { CustomButton } from "../ui/reusables/custom-btn";
+import SessionTerms from "./session-terms";
 
 const SingleSession = () => {
   const { sessionId } = useParams();
@@ -21,7 +22,7 @@ const SingleSession = () => {
   const [open, setOpen] = useState(false);
 
   if (isLoadingSession) return <AdminDashboardSkeleton />;
-  if (!sessionData) return <div>No session found</div>;
+  // if (!sessionData) return <div>No session found</div>;
 
   const session: SessionType = sessionData?.data?.session;
 
@@ -54,10 +55,12 @@ const SingleSession = () => {
 
   return (
     <div className="mt-8 flex flex-col gap-6">
-      <div className="w-28">
-        <BackBtn />
+      <div className="fixed top-0 left-0 right-0 my-8">
+        <div className="w-28">
+          <BackBtn />
+        </div>
       </div>
-      <Cols className="gap-4">
+      <Cols className="gap-4 mt-8">
         <h1 className="font-black text-xl">Session Details</h1>
         <Box className="min-h-50!">
           <BoxItemRow title="Session" answer={session?.session} />
@@ -89,6 +92,8 @@ const SingleSession = () => {
         </Box>
       </Cols>
 
+      <SessionTerms session={session} />
+
       <Modal open={open} onClose={() => setOpen(false)}>
         <Cols className="gap-3">
           <h2 className="font-black text-xl">Activate Session</h2>
@@ -116,7 +121,7 @@ const SingleSession = () => {
 
 export default SingleSession;
 
-const ToggleBtn = ({
+export const ToggleBtn = ({
   firstLabel,
   lastLabel,
   disabled,

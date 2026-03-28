@@ -1,9 +1,16 @@
 import { StudentsType } from "@/utils/types";
 import { apiClient } from "../axios";
 
-const getStudents = (classId?: string) => {
-  const params = classId ? { classId } : undefined;
-  return apiClient.get(`/students${classId ? `/classId/${classId}` : ""}`);
+const getStudents = (
+  classId?: string,
+  sessionId?: string,
+  page?: number,
+  limit?: number,
+) => {
+  // const params = classId ? { classId } : undefined;
+  return apiClient.get(
+    `/students${classId ? `/classId/${classId}` : ""}?page=${page || 1}&limit=${limit || 10}${sessionId ? `&curSessionId=${sessionId}` : ""}`,
+  );
 };
 
 const getStudent = (studentId: string) => {

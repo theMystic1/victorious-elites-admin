@@ -9,7 +9,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const isProtectedRoute = protectedRoutes.includes(pathname);
   return (
     <main
-      className={`h-screen w-screen   ${isProtectedRoute ? "w-full" : "lg:p-8 p-5 m-auto  xl:max-w-340"} relative`}
+      className={`min-h-screen w-screen   ${isProtectedRoute ? "w-full" : "lg:p-8 p-5 m-auto  xl:max-w-340"} relative`}
     >
       {isProtectedRoute ? (
         <ProtectedDashboardWrapper>{children}</ProtectedDashboardWrapper>
@@ -29,7 +29,7 @@ const ProtectedDashboardWrapper = ({
 }) => {
   return (
     <div className="lg:grid lg:grid-cols-[240px_1fr] gap-2 relative h-full w-full">
-      <div className="hidden top-0 bottom-0 w-full h-full lg:flex relative overflow-y-auto shadow">
+      <div className="hidden top-0 bottom-0 w-full h-screen lg:flex relative overflow-y-auto shadow">
         <DashboardNav />
       </div>
       <div className="w-full relative">

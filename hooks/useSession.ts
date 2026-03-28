@@ -3,15 +3,16 @@ import { useParams, useSearchParams } from "next/navigation";
 import { getSession, getSessions } from "@/lib/api/endpoints/school";
 
 export const useSession = () => {
-  const searchParams = useSearchParams();
-
+  const params = useSearchParams();
+  const page = Number(params.get("page") || 1);
+  const limit = Number(params.get("limit") || 10);
   const {
     data: sessionData,
     isLoading: isLoadingSession,
     refetch: refetchSession,
   } = useQuery({
-    queryKey: ["session"],
-    queryFn: () => getSessions().then((res) => res.data),
+    queryKey: ["session", page, limit],
+    queryFn: () => getSessions({ page, limit }).then((res) => res.data),
   });
   return { sessionData, isLoadingSession, refetchSession };
 };

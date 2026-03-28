@@ -1,9 +1,7 @@
+import Classes from "@/components/school/classes";
+
 const ClassPage = () => {
-  return (
-    <div>
-      <h1>Class Page</h1>
-    </div>
-  );
+  return <Classes />;
 };
 
 export default ClassPage;

@@ -14,6 +14,7 @@ import {
 } from "@/lib/api/endpoints/students";
 import { CustomButton } from "../ui/reusables/custom-btn";
 import { useParams, useRouter } from "next/navigation";
+import { constructClassName } from "@/lib/helpers/helper";
 
 type GenderType = "MALE" | "FEMALE";
 
@@ -25,14 +26,18 @@ const StudentsModal = ({
   refetchStudents,
   isEdit,
   editStudent,
+  curClass,
+  curSession,
 }: {
-  fetchedClasses: ClassType[];
-  fetchedSessions: SessionType[];
+  fetchedClasses?: ClassType[];
+  fetchedSessions?: SessionType[];
   open: boolean;
   onClose: () => void;
   refetchStudents: () => void;
   isEdit?: boolean;
   editStudent?: StudentsType;
+  curClass?: ClassType;
+  curSession?: SessionType;
 }) => {
   const [selectedClass, setSelectedClass] = useState(
     editStudent?.curClassId ?? "",
@@ -45,7 +50,7 @@ const StudentsModal = ({
   );
   const [mutating, setMutating] = useState(false);
 
-  console.log(editStudent);
+  // console.log(editStudent);
 
   useEffect(() => {
     if (editStudent) {
@@ -84,14 +89,20 @@ const StudentsModal = ({
     try {
       const studentData = {
         ...data,
-        curClassId: selectedClass,
+        curClassId:
+          fetchedClasses && fetchedClasses?.length > 0
+            ? selectedClass
+            : curClass?._id,
         gender: selectedGender?.toUpperCase() as GenderType,
-        curSessionId: selectedSession,
+        curSessionId:
+          fetchedClasses && fetchedClasses?.length > 0
+            ? selectedSession
+            : curSession?._id,
       };
       const student =
         isEdit && editStudent
-          ? await updateStudent(editStudent?._id!, studentData)
-          : await addStudent(studentData);
+          ? await updateStudent(editStudent?._id!, studentData as StudentsType)
+          : await addStudent(studentData as StudentsType);
       refetchStudents();
       handleClose();
       toast.remove();
@@ -119,8 +130,17 @@ const StudentsModal = ({
       description={
         isEdit ? "Edit student details" : "Enter new student details"
       }
+      footer={
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={handleSubmit(onSubmit)}
+        >
+          {mutating ? "Saving..." : "Save"}
+        </button>
+      }
     >
-      <div className="flex flex-col gap-3 overflow-y-auto">
+      <div className="flex flex-col gap-3 overflow-y-auto max-h-120">
         <InputContainer label="Full Name">
           <div className="w-full input flex items-center justify-between">
             <input
@@ -141,7 +161,7 @@ const StudentsModal = ({
             <input
               type="number"
               className="w-full iput"
-              placeholder="Enter student age"
+              placeholder="Enter student age "
               {...register("age", {
                 required: "Age is required",
               })}
@@ -164,7 +184,7 @@ const StudentsModal = ({
           />
         </InputContainer>
 
-        <InputContainer label="Reg No.">
+        {/*<InputContainer label="Reg No.">
           <div className="w-full input flex items-center justify-between">
             <input
               type="text"
@@ -178,42 +198,45 @@ const StudentsModal = ({
           {errors.studentsId && (
             <ErrorText error={errors.studentsId.message?.toString() ?? ""} />
           )}
-        </InputContainer>
+        </InputContainer>*/}
 
-        <InputContainer label="Class">
-          <SearchableNativeSelect
-            options={fetchedClasses.map((cls) => ({
-              value: cls._id!,
-              label: cls.name?.includes("P")
-                ? `Primary ${cls.name?.split("")[1]} ${cls.arm}`
-                : `${cls.name} ${cls.arm}`,
-              disabled: !cls.isActive,
-            }))}
-            value={selectedClass as string}
-            onChange={(value) => setSelectedClass(value)}
-            placeholder="Select student class"
-            // className="input"
-          />
-        </InputContainer>
-        <InputContainer label="Session">
-          <SearchableNativeSelect
-            options={fetchedSessions.map((session) => ({
-              value: session._id!,
-              label: session.session,
-            }))}
-            value={selectedSession as string}
-            onChange={(value) => setSelectedSession(value)}
-            placeholder="Select student session"
-          />
-        </InputContainer>
+        {fetchedClasses && fetchedClasses?.length > 0 ? (
+          <InputContainer label="Class">
+            <SearchableNativeSelect
+              options={fetchedClasses.map((cls) => ({
+                value: cls._id!,
+                label: `${constructClassName(cls.name, cls.level)} ${cls.arm}`,
+                disabled: !cls.isActive,
+              }))}
+              value={selectedClass as string}
+              onChange={(value) => setSelectedClass(value)}
+              placeholder="Select student class"
+              // className="input"
+            />
+          </InputContainer>
+        ) : null}
+        {fetchedSessions && fetchedSessions?.length > 0 ? (
+          <InputContainer label="Session">
+            <SearchableNativeSelect
+              options={fetchedSessions.map((session) => ({
+                value: session._id!,
+                label: session.session,
+              }))}
+              value={selectedSession as string}
+              onChange={(value) => setSelectedSession(value)}
+              placeholder="Select student session"
+            />
+          </InputContainer>
+        ) : null}
 
-        <button
+        {/*<button
           type="submit"
           className="btn btn-primary"
           onClick={handleSubmit(onSubmit)}
         >
           {mutating ? "Saving..." : "Save"}
         </button>
+      */}
       </div>
     </Modal>
   );
