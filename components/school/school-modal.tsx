@@ -15,7 +15,11 @@ import { toApiError } from "@/utils/api-error";
 import toast from "react-hot-toast";
 import { addStaff, updateStaff } from "@/lib/api/endpoints/auth";
 import DatePicker from "../ui/reusables/date-selector";
-import { addNewSession, updateSession } from "@/lib/api/endpoints/school";
+import {
+  addNewSession,
+  moveToNewSession,
+  updateSession,
+} from "@/lib/api/endpoints/school";
 
 const SessionModal = ({
   open,
@@ -23,12 +27,14 @@ const SessionModal = ({
   refetchStaff,
   isEdit,
   editStaff,
+  curSessionId,
 }: {
   open: boolean;
   onClose: () => void;
   refetchStaff: () => void;
   isEdit?: boolean;
   editStaff?: SessionType;
+  curSessionId: string;
 }) => {
   const [mutating, setMutating] = useState(false);
   const [selectedActive, setSelectedActive] = useState(
@@ -74,13 +80,24 @@ const SessionModal = ({
       const staffData = {
         ...data,
         session: `${date?.getFullYear()}/${endDate?.getFullYear()}`,
-        isActive: selectedActive,
+        isActive: isEdit ? selectedActive : true,
         startDate: date?.toDateString() as string,
         endDate: endDate?.toDateString() as string,
       };
-      isEdit
-        ? await updateSession(editStaff?._id!, staffData)
-        : await addNewSession(staffData);
+
+      if (isEdit) await updateSession(editStaff?._id!, staffData);
+      else {
+        const newSession = await addNewSession(staffData);
+
+        toast.remove();
+        toast.loading("Promoting students....");
+        console.log(curSessionId);
+        await moveToNewSession(
+          newSession?.data?.data?.session?._id,
+          curSessionId,
+        );
+      }
+
       refetchStaff();
       handleClose();
       toast.remove();
@@ -110,7 +127,8 @@ const SessionModal = ({
     >
       <div className="flex flex-col gap-3 overflow-y-auto">
         <p className="text-sm font-black">
-          Session will be autofilled based on the start and end dates{" "}
+          NOTE: Creating a new session will close the previous session and move
+          the entire students to the next class, This action is irreversible.
         </p>
         {/*<InputContainer label="Session">
           <div className="w-full input flex items-center justify-between bg-gray-100">

@@ -1,3 +1,4 @@
+import { ClassNameType, LevelType } from "@/utils/types";
 import cookie from "js-cookie";
 
 export const validateEmail = (email: string): boolean => {
@@ -42,4 +43,50 @@ export const formatDate = (date: Date | string): string => {
     day: "numeric",
   };
   return new Date(date).toLocaleDateString(undefined, options);
+};
+
+export const toOrdinal = (n: number) => {
+  const num = Math.trunc(n);
+  if (!Number.isFinite(num) || num <= 0) return "";
+
+  const mod100 = num % 100;
+  if (mod100 >= 11 && mod100 <= 13) return `${num}th`;
+
+  switch (num % 10) {
+    case 1:
+      return `${num}st`;
+    case 2:
+      return `${num}nd`;
+    case 3:
+      return `${num}rd`;
+    default:
+      return `${num}th`;
+  }
+};
+
+export const constructClassName = (
+  className: ClassNameType,
+  level: LevelType,
+) => {
+  let name: string = className;
+
+  if (level === "KG") {
+    if (className === "PREKG") name = "Pre Nursery";
+    else name = `Nursery ${className?.split("")[2]}`;
+  }
+
+  if (level === "PRIMARY") name = `Basic ${className?.split("")[1]}`;
+
+  return name;
+};
+
+export const constructLevel = (level: LevelType) => {
+  let levelName: string = level;
+
+  if (level === "KG") levelName = "Nursery";
+  if (level === "PRIMARY") levelName = "Basic";
+  if (level === "JS") levelName = "Junior Secondary";
+  if (level === "SS") levelName = "Senior Secondary";
+
+  return levelName;
 };

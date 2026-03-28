@@ -3,7 +3,7 @@ import Staffs from "@/components/staffs/staffs";
 const StaffsPage = () => {
   return (
     <div>
-      <Staffs />
+      <Staffs page="staff" />
     </div>
   );
 };

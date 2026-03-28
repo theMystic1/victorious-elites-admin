@@ -51,8 +51,16 @@ export const addStaff = async (staffData: METype) => {
   return data;
 };
 
-export const getStaffs = async () => {
-  const { data } = await apiClient.get(`${base}/staffs`);
+export const getStaffs = async ({
+  page,
+  limit,
+}: {
+  page: number;
+  limit: number;
+}) => {
+  const { data } = await apiClient.get(
+    `${base}/staffs?page=${page}&limit=${limit}`,
+  );
   return data;
 };
 

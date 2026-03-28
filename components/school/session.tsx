@@ -24,11 +24,14 @@ import SessionModal from "./school-modal";
 import { CustomButton } from "../ui/reusables/custom-btn";
 import { useRouter } from "next/navigation";
 import { ActiveBadge } from "./single-session";
+import Empty from "../ui/reusables/empty";
+import { Cols } from "../ui/reusables/cols-rows";
+import Pagination from "../ui/reusables/pagination";
 
 const Sessions = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [open, setOpen] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
+  // const [openDelete, setOpenDelete] = useState(false);
   const [editStaff, setEditStaff] = useState<SessionType | null>(null);
   const router = useRouter();
 
@@ -36,9 +39,13 @@ const Sessions = () => {
   const { me, isLoadingMe } = useMe();
 
   if (isLoadingSession || isLoadingMe) return <AdminDashboardSkeleton />;
-  if (!sessionData) return <div>No sessions found.</div>;
+  // if (!sessionData) return <div>No sessions found.</div>;
 
   const sessions: SessionType[] = sessionData?.data?.sessions;
+
+  const activeSession = sessions?.find((ses) => ses?.isActive);
+
+  console.log(activeSession);
 
   return (
     <div>
@@ -51,55 +58,68 @@ const Sessions = () => {
             </button>
           </div>
         </div>
-        <Table>
-          <TableHeader>
-            <Tr>
-              <Th>Session</Th>
-              <Th>Start Date</Th>
-              <Th>End Date</Th>
-              <Th>Session Status</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </TableHeader>
-          <Tbody>
-            {sessions.map((session, index) => (
-              <Tr key={session._id}>
-                <Td>{session?.session}</Td>
-                <Td>{formatDate(session?.startDate)}</Td>
-                <Td>{formatDate(session?.endDate)}</Td>
-                <Td>
-                  <ActiveBadge
-                    status={session?.isActive ? "Active" : "Inactive"}
-                  />
-                </Td>
-                <Td>
-                  <RowActionsMenuPortal
-                    actions={[
-                      {
-                        label: "View",
-                        onClick: () => router.push(`/school/${session._id}`),
-                      },
-                      {
-                        label: "Edit",
-                        onClick: () => {
-                          setIsEditing(true);
-                          setEditStaff(session);
+        {!sessions?.length ? (
+          <Cols className="items-center gap-3">
+            <Empty
+              title="No sessions found"
+              description="No sessions found on your database."
+            />
+            <Cols className="max-w-50">
+              <button className="btn btn-primary" onClick={() => setOpen(true)}>
+                + New Session
+              </button>
+            </Cols>
+          </Cols>
+        ) : (
+          <Table>
+            <TableHeader>
+              <Tr>
+                <Th>Session</Th>
+                <Th>Start Date</Th>
+                <Th>End Date</Th>
+                <Th>Session Status</Th>
+                <Th>Actions</Th>
+              </Tr>
+            </TableHeader>
+            <Tbody>
+              {sessions.map((session, index) => (
+                <Tr key={session._id}>
+                  <Td>{session?.session}</Td>
+                  <Td>{formatDate(session?.startDate)}</Td>
+                  <Td>{formatDate(session?.endDate)}</Td>
+                  <Td>
+                    <ActiveBadge
+                      status={session?.isActive ? "Active" : "Inactive"}
+                    />
+                  </Td>
+                  <Td>
+                    <RowActionsMenuPortal
+                      actions={[
+                        {
+                          label: "View",
+                          onClick: () => router.push(`/school/${session._id}`),
                         },
-                      },
-                      // {
-                      //   label: session?.isActive
-                      //     ? "End Session"
-                      //     : "Session Ended",
-                      //   onClick: () => {
-                      //     setOpenDelete(true);
-                      //     // setEditStaff(staff);
-                      //   },
-                      //   disabled: !session?.isActive,
-                      // },
-                    ]}
-                  />
+                        {
+                          label: "Edit",
+                          onClick: () => {
+                            setIsEditing(true);
+                            setEditStaff(session);
+                          },
+                        },
+                        // {
+                        //   label: session?.isActive
+                        //     ? "End Session"
+                        //     : "Session Ended",
+                        //   onClick: () => {
+                        //     setOpenDelete(true);
+                        //     // setEditStaff(staff);
+                        //   },
+                        //   disabled: !session?.isActive,
+                        // },
+                      ]}
+                    />
 
-                  {/*<div className="max-w-20">
+                    {/*<div className="max-w-20">
                     <CustomButton
                       onClick={() => {
                         setIsEditing(true);
@@ -110,11 +130,19 @@ const Sessions = () => {
                       Edit
                     </CustomButton>
                   </div>*/}
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        )}
+
+        <Pagination
+          paramName="page"
+          limitParamName="limit"
+          meta={sessionData?.pagination}
+          className="mt-8"
+        />
 
         <SessionModal
           open={open || isEditing}
@@ -126,6 +154,7 @@ const Sessions = () => {
           isEdit={isEditing}
           editStaff={editStaff!}
           refetchStaff={refetchSession}
+          curSessionId={activeSession?._id as string}
         />
 
         {/*<StaffsModal

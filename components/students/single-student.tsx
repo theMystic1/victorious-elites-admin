@@ -11,6 +11,8 @@ import { ClassType, SessionType, StudentsType } from "@/utils/types";
 import StudentsModal, { DeleteConfirmModal } from "./students-modal";
 import { useSession } from "@/hooks/useSession";
 import { useClasses } from "@/hooks/useClasses";
+import StudentsInfo from "./studentsInfo";
+import SectionSkeleton from "../ui/reusables/section-loader";
 
 const SingleStudent = ({ studentsId }: { studentsId: string }) => {
   const [open, setOpen] = useState(false);
@@ -19,6 +21,7 @@ const SingleStudent = ({ studentsId }: { studentsId: string }) => {
   const [editStudent, setEditStudent] = useState<StudentsType | undefined>(
     undefined,
   );
+  const router = useRouter();
 
   const { studentData, isLoadingStudent, refetchStudent } = useSingleStudent();
 
@@ -29,8 +32,8 @@ const SingleStudent = ({ studentsId }: { studentsId: string }) => {
   const fetchedClasses: ClassType[] = classesData?.data?.classes ?? [];
   const fetchedSessions: SessionType[] = sessionData?.data?.sessions ?? [];
 
-  if (isLoading) return <div>Loading...</div>;
-  if (!studentData) return <div>Student not found</div>;
+  if (isLoading) return <SectionSkeleton />;
+  // if (!studentData) return <div>Student not found</div>;
 
   const singleStudent = studentData?.data?.student;
   // console.log(singleStudent);
@@ -62,52 +65,26 @@ const SingleStudent = ({ studentsId }: { studentsId: string }) => {
             <BackBtn />
           </div>
           <div>
-            <CustomButton>Compute result</CustomButton>
+            <CustomButton
+              onClick={() => {
+                router.push(`/results/${singleStudent._id}/compute`);
+                sessionStorage.setItem(
+                  "sessionId",
+                  (singleStudent?.curSessionId as SessionType)?.session || "",
+                );
+              }}
+            >
+              Compute result
+            </CustomButton>
           </div>
         </Row>
 
-        <Box>
-          <BoxItemRow
-            title="Full Name"
-            answer={singleStudent?.fullName ?? ""}
-          />
-          <BoxItemRow
-            title="Current Class"
-            answer={singleStudent?.curClassId?.name ?? ""}
-          />
-          <BoxItemRow
-            title="Current Session"
-            answer={singleStudent?.curSessionId?.session ?? ""}
-          />
-          <BoxItemRow title="Gender" answer={singleStudent?.gender ?? ""} />
-          <BoxItemRow title="Age" answer={singleStudent?.age ?? ""} />
-          <BoxItemRow
-            title="Results"
-            answer={singleStudent?.results?.length ?? ""}
-          />
-          <BoxItemRow
-            title="Actions"
-            answer={
-              <div className="flex items-center gap-2 flex-wrap">
-                <button
-                  className="text-blue-600 cursor-pointer py-1 px-3 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-300  border border-blue-600"
-                  onClick={() => setOpen(true)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="text-red-600 cursor-pointer py-1 px-3 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300  border border-red-600"
-                  onClick={() => setOpenDelete(true)}
-                >
-                  Delete
-                </button>
-                <button className="text-yellow-600 cursor-pointer py-1 px-3 rounded-xl hover:bg-yellow-600 hover:text-white transition-all duration-300  border border-yellow-600">
-                  View results
-                </button>
-              </div>
-            }
-          />
-        </Box>
+        <StudentsInfo
+          type="student"
+          singleStudent={singleStudent}
+          setOpen={setOpen}
+          setOpenDelete={setOpenDelete}
+        />
       </div>
 
       <StudentsModal
@@ -169,12 +146,16 @@ export const BoxItemRow = ({
   );
 };
 
-export const BackBtn = () => {
+export const BackBtn = ({ pathname }: { pathname?: string }) => {
   const router = useRouter();
   return (
     <button
-      className="btn text-gray-500 hover:text-gray-900 hover:underline transition-all duration-300"
-      onClick={() => router.back()}
+      className="btn text-gray-500 hover:text-gray-900 hover:underline transition-all duration-300 max-w-28"
+      onClick={() => {
+        if (pathname) return router.push(pathname);
+
+        router.back();
+      }}
     >
       <IoIosArrowRoundBack size={16} />
       <span>Back</span>
