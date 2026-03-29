@@ -13,7 +13,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         ? "Verify Email"
         : "Reset Password";
   return (
-    <main className="h-full w-full flex items-center justify-center  p-4 lg:p-8 md:m-auto">
+    <main className="h-full w-full min-h-200 flex items-center justify-center  p-4 lg:p-8 md:m-auto">
       <div className="card w-full md:max-w-160">
         <div className="w-full flex flex-col gap-6 items-center justify-center mb-8">
           <Logo size="lg" />
