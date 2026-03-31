@@ -11,16 +11,18 @@ import useMe from "@/hooks/useMe";
 import { CustomButton } from "../reusables/custom-btn";
 import { GrLogout } from "react-icons/gr";
 import { removeCookie } from "@/lib/helpers/helper";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const DashboardNav = () => {
   const pathname = usePathname();
-
+  const qc = useQueryClient();
   const router = useRouter();
 
   const handleLogout = () => {
     removeCookie(process.env.NEXT_PUBLIC_ACCESS_TOKEN!);
 
     router.push("/login");
+    qc.clear();
   };
 
   return (

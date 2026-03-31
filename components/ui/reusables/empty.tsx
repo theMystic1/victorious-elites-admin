@@ -20,6 +20,7 @@ const Empty = ({
           alt="empty box"
           layout="fill"
           objectFit="contain"
+          loading="eager"
         />
       </div>
       <h2 className="text-xl font-semibold">{title}</h2>

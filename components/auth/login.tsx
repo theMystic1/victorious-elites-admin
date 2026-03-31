@@ -40,11 +40,9 @@ const Login = () => {
       }
 
       if (res?.data?.user?.isActive === false) {
-        console.log(res, res?.data?.user?.isActive);
         router.push("/changePassword");
       } else {
         router.push("/");
-        router.refresh();
       }
     } catch (error: any) {
       const { message } = toApiError(error);
