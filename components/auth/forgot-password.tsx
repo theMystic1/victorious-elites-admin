@@ -62,8 +62,8 @@ const ForgotPassword = () => {
         <ErrorText error={errors.email.message?.toString() ?? ""} />
       )}
 
-      <button type="submit" className="btn btn-primary">
-        Send reset code
+      <button type="submit" className="btn btn-primary" disabled={isLoading}>
+        {isLoading ? "Sending code ...." : "  Send reset code"}
       </button>
     </form>
   );

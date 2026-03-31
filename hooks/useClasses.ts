@@ -7,7 +7,7 @@ export const useClasses = () => {
   const searchParams = useSearchParams();
 
   const page = Number(searchParams.get("page") || 1);
-  const limit = Number(searchParams.get("limit") || 10);
+  const limit = Number(searchParams.get("limit") || 20);
   const classLevel = searchParams.get("classLevel");
 
   const {

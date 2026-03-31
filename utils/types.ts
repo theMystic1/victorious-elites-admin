@@ -110,3 +110,8 @@ export type ResultCreateType = {
   // grade: string;
   remark: string;
 };
+
+export type RatingsItemType = {
+  category: "Psychomotor" | "Behaviour" | "Affective" | "Nursery" | "Basic";
+  item: string;
+};

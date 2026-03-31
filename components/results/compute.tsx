@@ -23,12 +23,17 @@ const ComputeResult = () => {
     <Cols className="gap-6">
       <Row className="w-full justify-between!">
         <div>
-          <BackBtn pathname="/results" />
+          <BackBtn
+            pathname={`/results?classId=${(singleStudent?.curClassId as ClassType)?._id}`}
+          />
         </div>
         <div></div>
       </Row>
       <StudentsInfo singleStudent={singleStudent} type="result" />
-      <ResultCompute classId={(singleStudent?.curClassId as ClassType)?._id!} />
+      <ResultCompute
+        classId={(singleStudent?.curClassId as ClassType)?._id!}
+        level={(singleStudent?.curClassId as ClassType)?.level!}
+      />
     </Cols>
   );
 };

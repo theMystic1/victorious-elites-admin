@@ -5,7 +5,7 @@ import {
   getSubjectClass,
 } from "@/lib/api/endpoints/subjects";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 const useSubjectClasses = (subId?: string) => {
   const { subjectId } = useParams();
@@ -27,14 +27,16 @@ const useSubjectClasses = (subId?: string) => {
 
 const useClassSubjects = (clId?: string) => {
   const { classId } = useParams();
+  const prm = useSearchParams();
+  const id = prm?.get("classId");
 
-  const idToUse = clId ?? classId;
+  const idToUse = clId || id || classId;
   const {
     data: classSubjectsData,
     isLoading: isLoadingClassSubjects,
     refetch: refetchClassSubjects,
   } = useQuery({
-    queryKey: ["classSubjects"],
+    queryKey: ["classSubjects", idToUse],
     queryFn: async () =>
       await getClassSubjects(idToUse as string).then((res) => res.data),
     enabled: !!idToUse,

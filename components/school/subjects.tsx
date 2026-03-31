@@ -24,6 +24,8 @@ import RowActionsMenuPortal from "../ui/reusables/table-menu";
 import SubjectsModal from "./subject-modal";
 import Pagination from "../ui/reusables/pagination";
 import AdminDashboardSkeleton from "@/app/loading";
+import { constructClassName } from "@/lib/helpers/helper";
+import { useClassSubjects } from "@/hooks/useSubjectClasses";
 
 const Subjects = () => {
   const [selectedClass, setSelectedClass] = useState<string>("");
@@ -36,11 +38,15 @@ const Subjects = () => {
   const sp = useSearchParams();
 
   const { subjectsData, isLoadingSubjects, refetchSubjects } = useSubjects();
-  const fetchedSubjects: SubjectType[] = subjectsData?.data?.subjects ?? [];
+  const { classSubjectsData, isLoadingClassSubjects } = useClassSubjects();
+
+  const sub = classSubjectsData?.data?.classSubjects?.map((subj: any) => ({
+    ...subj?.subjectId,
+  }));
+  const fetchedSubjects: SubjectType[] =
+    sub?.length > 0 ? sub : (subjectsData?.data?.subjects ?? []);
   const { classesData, isLoadingClasses } = useClasses();
   const fetchedClasses: ClassType[] = classesData?.data?.classes ?? [];
-
-  // console.log(subjectsData);
 
   const updateQueryParams = (classId: string) => {
     const next = new URLSearchParams(sp.toString());
@@ -51,7 +57,8 @@ const Subjects = () => {
     router.push(`${pathname}?${next.toString()}`);
   };
 
-  if (isLoadingClasses || isLoadingSubjects) return <AdminDashboardSkeleton />;
+  if (isLoadingClasses || isLoadingSubjects || isLoadingClassSubjects)
+    return <AdminDashboardSkeleton />;
   return (
     <Cols className="gap-5 mt-6">
       <TableOverflow className="min-h-100 ">
@@ -65,9 +72,7 @@ const Subjects = () => {
                   { value: "", label: "All" },
                   ...fetchedClasses.map((cls) => ({
                     value: cls._id!,
-                    label: cls.name?.includes("P")
-                      ? `Primary ${cls.name?.split("")[1]} ${cls.arm}`
-                      : `${cls.name} ${cls.arm}`,
+                    label: `${constructClassName(cls.name, cls.level)} ${cls.arm}`,
                     disabled: !cls.isActive,
                   })),
                 ]}

@@ -44,7 +44,10 @@ const StudentsTable = ({
   const router = useRouter();
   const pathname = usePathname();
   const sp = useSearchParams();
-  const [selectedClass, setSelectedClass] = useState<string>("");
+
+  const classLevel = sp.get("classId");
+
+  const [selectedClass, setSelectedClass] = useState<string>(classLevel || "");
 
   const { studentsData, isLoadingStudent } = useStudents({});
   const { sessionData, isLoadingSession } = useSession();
@@ -60,6 +63,8 @@ const StudentsTable = ({
 
   const updateQueryParams = (classId: string) => {
     const next = new URLSearchParams(sp.toString());
+
+    if (!classId) next.delete("classId");
     next.set("classId", classId);
 
     router.push(`${pathname}?${next.toString()}`);
@@ -79,11 +84,17 @@ const StudentsTable = ({
         <div className="flex items-center gap-2">
           <InputContainer>
             <SearchableNativeSelect
-              options={fetchedClasses.map((cls) => ({
-                value: cls._id!,
-                label: `${constructClassName(cls.name, cls.level)} ${cls.arm}`,
-                disabled: !cls.isActive,
-              }))}
+              options={[
+                {
+                  value: "",
+                  label: "All",
+                },
+                ...fetchedClasses.map((cls) => ({
+                  value: cls._id!,
+                  label: `${constructClassName(cls.name, cls.level)} ${cls.arm}`,
+                  disabled: !cls.isActive,
+                })),
+              ]}
               value={selectedClass}
               onChange={(value) => {
                 setSelectedClass(value);
