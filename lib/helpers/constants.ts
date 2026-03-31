@@ -19,6 +19,7 @@ export const protectedRoutes = [
   "/school/class",
   "/school/subject",
   "/results",
+  "/changePassword",
 ];
 
 export const navItems = [

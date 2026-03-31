@@ -6,12 +6,14 @@ import { DashboardNav, TopNav } from "../dashboard/nav";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+
+  const pathnameIsChangePwd = pathname === "/changePassword";
   const isProtectedRoute = protectedRoutes.includes(pathname);
   return (
     <main
-      className={`min-h-screen w-screen   ${isProtectedRoute ? "w-full" : "lg:p-8 p-5 m-auto  xl:max-w-340"} relative`}
+      className={`min-h-screen w-screen   ${isProtectedRoute && !pathnameIsChangePwd ? "w-full" : "lg:p-8 p-5 m-auto  xl:max-w-340"} relative`}
     >
-      {isProtectedRoute ? (
+      {isProtectedRoute && !pathnameIsChangePwd ? (
         <ProtectedDashboardWrapper>{children}</ProtectedDashboardWrapper>
       ) : (
         <div className="h-full">{children}</div>

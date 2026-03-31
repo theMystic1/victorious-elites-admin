@@ -39,7 +39,11 @@ const Login = () => {
         );
       }
 
-      router.push("/");
+      if (res?.data?.user?.isActive === false) {
+        router.push("/changePassword");
+      } else {
+        router.push("/");
+      }
     } catch (error: any) {
       const { message } = toApiError(error);
       console.error(message);

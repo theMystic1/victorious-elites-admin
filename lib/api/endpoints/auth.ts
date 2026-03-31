@@ -44,6 +44,11 @@ export const resetPassword = async (
   return data;
 };
 
+export const changePassword = async (password: string) => {
+  const { data } = await apiClient.post(`${base}/changePassword`, { password });
+  return data;
+};
+
 /* STAFFS */
 
 export const addStaff = async (staffData: METype) => {
