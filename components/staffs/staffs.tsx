@@ -34,7 +34,7 @@ const Staffs = ({ page }: { page: "staff" | "overview" }) => {
   const router = useRouter();
 
   if (isLoadingStaff || isLoadingMe) return <AdminDashboardSkeleton />;
-  if (!staffsData) return <div>No staffs found.</div>;
+  // if (!staffsData) return <div>No staffs found.</div>;
 
   const staffs: METype[] = staffsData?.data?.staffs;
   const curUser: METype = me?.user;
@@ -58,7 +58,8 @@ const Staffs = ({ page }: { page: "staff" | "overview" }) => {
             </button>
           </div>
         </div>
-        {!staffs.length ? (
+
+        {!staffs?.length ? (
           <Empty
             title="No staffs found"
             description="No staffs found on your database."

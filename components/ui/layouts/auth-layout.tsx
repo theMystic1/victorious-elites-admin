@@ -11,7 +11,9 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       ? "Enter your account  email "
       : pathname.includes("otp")
         ? "Verify Email"
-        : "Reset Password";
+        : pathname.includes("change")
+          ? "Change Password"
+          : "Reset Password";
   return (
     <main className="h-full w-full min-h-200 flex items-center justify-center  p-4 lg:p-8 md:m-auto">
       <div className="card w-full md:max-w-160">
