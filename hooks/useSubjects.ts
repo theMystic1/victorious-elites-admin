@@ -7,12 +7,13 @@ const useSubjects = () => {
 
   const page = Number(searchParams.get("page") || 1);
   const limit = Number(searchParams.get("limit") || 10);
+  const classId = String(searchParams.get("classId") || 10);
   const {
     data: subjectsData,
     isLoading: isLoadingSubjects,
     refetch: refetchSubjects,
   } = useQuery({
-    queryKey: ["subjects", page, limit],
+    queryKey: ["subjects", page, limit, classId],
     queryFn: async () =>
       await getSubjects({ page, limit }).then((res) => res.data),
   });

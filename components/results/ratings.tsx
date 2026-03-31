@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { Cols, Row } from "../ui/reusables/cols-rows";
 import { rateStudent } from "@/lib/api/endpoints/ratings";
+import { LevelType } from "@/utils/types";
 
 type RateItem = {
   category: string;
@@ -25,25 +26,31 @@ const clampRating = (raw: string): number | "" => {
 };
 
 const RateStudent = ({
-  affectiveness,
-  behavioural,
-  psychomotor,
+  affectiveness = [],
+  behavioural = [],
+  psychomotor = [],
   refetch,
   termId,
   sessionId,
   classId,
   studentId,
   summary,
+  level,
+  Nursery = [],
+  Basic = [],
 }: {
-  affectiveness: RateItem[];
-  psychomotor: RateItem[];
-  behavioural: RateItem[];
+  affectiveness?: RateItem[];
+  psychomotor?: RateItem[];
+  behavioural?: RateItem[];
+  Nursery?: RateItem[];
+  Basic?: RateItem[];
   refetch: () => void;
 
   termId: string;
   sessionId: string;
   classId: string;
   studentId: string;
+  level: LevelType;
 
   summary: {
     formTeacherRemark: string;
@@ -186,11 +193,16 @@ const RateStudent = ({
         </Cols>
       </Row>
 
-      <div className="grid grid-cols-3 gap-3">
-        {renderColumn("Affectiveness", affectiveness)}
-        {renderColumn("Behavioural", behavioural)}
-        {renderColumn("Psychomotor", psychomotor)}
-      </div>
+      {Nursery?.length > 0 && renderColumn("Rating", Nursery)}
+      {Basic?.length > 0 && renderColumn("Rating", Basic)}
+      {
+        <div className="grid grid-cols-3 gap-3">
+          {affectiveness?.length > 0 &&
+            renderColumn("Affectiveness", affectiveness)}
+          {behavioural?.length > 0 && renderColumn("Behavioural", behavioural)}
+          {psychomotor?.length > 0 && renderColumn("Psychomotor", psychomotor)}
+        </div>
+      }
 
       <Cols className="gap-3">
         <h2 className="text-xl font-black">Teacher's / Principal's Remark</h2>

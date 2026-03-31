@@ -19,7 +19,12 @@ import { useSession } from "@/hooks/useSession";
 import { useTerms } from "@/hooks/useTerms";
 import { useStudentsTermResults } from "@/hooks/useStudentTermResults";
 
-import type { ResultType, SessionType, TermType } from "@/utils/types";
+import type {
+  LevelType,
+  ResultType,
+  SessionType,
+  TermType,
+} from "@/utils/types";
 import { CustomButton } from "../ui/reusables/custom-btn";
 import toast from "react-hot-toast";
 import { toApiError } from "@/utils/api-error";
@@ -60,7 +65,13 @@ const clampNum = (raw: string): number | "" => {
   return Number.isFinite(n) ? n : "";
 };
 
-const ResultCompute = ({ classId }: { classId: string }) => {
+const ResultCompute = ({
+  classId,
+  level,
+}: {
+  classId: string;
+  level: LevelType;
+}) => {
   const { studentsId } = useParams<{ studentsId: string }>();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -173,6 +184,8 @@ const ResultCompute = ({ classId }: { classId: string }) => {
   const psychomotor = rateItems?.filter(
     (itm: any) => itm.category === "Psychomotor",
   );
+  const Nursery = rateItems?.filter((itm: any) => itm.category === "Nursery");
+  const Basic = rateItems?.filter((itm: any) => itm.category === "Basic");
 
   // Build map of existing results keyed by REAL subjectId
   const existingMap = useMemo(() => {
@@ -331,7 +344,7 @@ const ResultCompute = ({ classId }: { classId: string }) => {
           <Cols className="gap-1">
             <h1 className="font-black text-xl">Compute student's result</h1>
             <p className="text-sm">
-              Fill the CA exam fields and remark, all the other fields will be
+              Fill the CA and exam fields , all the other fields will be
               auto-calculated and returned
             </p>
           </Cols>
@@ -519,6 +532,9 @@ const ResultCompute = ({ classId }: { classId: string }) => {
             classId={classId}
             studentId={studentsId}
             summary={studentsRatingData?.data?.summary}
+            level={level}
+            Nursery={Nursery}
+            Basic={Basic}
           />
         </TableOverflow>
       </Box>
