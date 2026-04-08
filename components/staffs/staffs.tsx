@@ -69,8 +69,8 @@ const Staffs = ({ page }: { page: "staff" | "overview" }) => {
             <TableHeader>
               <Tr>
                 <Th>Name</Th>
-                <Th className="hidden md:flex">Email</Th>
-                <Th className="hidden md:flex">Phone Number</Th>
+                <Th className="text-[0px] md:text-sm">Email</Th>
+                <Th className="text-[0px] md:text-sm">Phone Number</Th>
                 <Th>Role</Th>
 
                 {page === "staff" ? <Th>Actions</Th> : null}
@@ -85,8 +85,8 @@ const Staffs = ({ page }: { page: "staff" | "overview" }) => {
                       <span className="text-sm text-gray-500">(You)</span>
                     )}
                   </Td>
-                  <Td className="hidden md:flex">{staff?.email}</Td>
-                  <Td className="hidden md:flex">
+                  <Td className="text-[0px] md:text-sm">{staff?.email}</Td>
+                  <Td className="text-[0px] md:text-sm">
                     {staff?.phoneNumber ?? "_____"}
                   </Td>
                   <Td>{staff.role}</Td>

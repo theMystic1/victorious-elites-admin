@@ -76,7 +76,7 @@ const Sessions = () => {
               <Tr>
                 <Th className="text-sm">Session</Th>
                 <Th className="text-sm">Start Date</Th>
-                <Th className="text-sm hidden md:flex">End Date</Th>
+                <Th className="text-[0px] md:text-sm">End Date</Th>
                 <Th className="text-sm">Session Status</Th>
                 <Th className="text-sm">Actions</Th>
               </Tr>
@@ -88,7 +88,7 @@ const Sessions = () => {
                   <Td className="text-xs md:text-sm">
                     {formatDate(session?.startDate)}
                   </Td>
-                  <Td className="text-xs  md:text-sm hidden md:flex">
+                  <Td className="text-[0px] md:text-sm">
                     {formatDate(session?.endDate)}
                   </Td>
                   <Td className="text-xs  md:text-sm">

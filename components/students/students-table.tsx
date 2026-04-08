@@ -122,10 +122,10 @@ const StudentsTable = ({
             <Tr>
               <Th>Reg No.</Th>
               <Th>Name</Th>
-              <Th className="hidden md:flex">Age</Th>
+              <Th className="text-[0px] md:text-sm">Age</Th>
               <Th>Class</Th>
-              <Th className="hidden md:flex">Session</Th>
-              <Th className="hidden md:flex">Gender</Th>
+              <Th className="text-[0px] md:text-sm">Session</Th>
+              <Th className="text-[0px] md:text-sm">Gender</Th>
               <Th>Actions</Th>
             </Tr>
           </TableHeader>
@@ -134,15 +134,15 @@ const StudentsTable = ({
               <Tr key={index}>
                 <Td>{student.studentsId}</Td>
                 <Td>{student.fullName}</Td>
-                <Td className="hidden md:flex">{student.age} </Td>
+                <Td className="text-[0px] md:text-sm">{student.age} </Td>
                 <Td>
                   {`${constructClassName((student.curClassId as ClassType).name, (student.curClassId as ClassType).level)}
                  ${(student.curClassId as ClassType)?.arm}`}
                 </Td>
-                <Td className="hidden md:flex">
+                <Td className="text-[0px] md:text-sm">
                   {(student.curSessionId as SessionType).session}
                 </Td>
-                <Td className="hidden md:flex">{student.gender}</Td>
+                <Td className="text-[0px] md:text-sm">{student.gender}</Td>
                 <Td>
                   {/*<div>
                   <button className="btn">

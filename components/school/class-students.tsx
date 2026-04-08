@@ -140,9 +140,9 @@ const ClassStudents = ({ curClass }: { curClass: ClassType }) => {
               <Tr>
                 <Th>Reg No.</Th>
                 <Th>Name</Th>
-                <Th className="text-sm hidden lg:flex">Age</Th>
+                <Th className="text-[0px] lg:text-sm">Age</Th>
                 <Th>Class</Th>
-                <Th className="text-sm hidden lg:flex">Session</Th>
+                <Th className="text-[0px] lg:text-sm">Session</Th>
                 <Th>Gender</Th>
                 {/*<Th>Actions</Th>*/}
               </Tr>
@@ -152,14 +152,14 @@ const ClassStudents = ({ curClass }: { curClass: ClassType }) => {
                 <Tr key={index}>
                   <Td>{student.studentsId}</Td>
                   <Td>{student.fullName}</Td>
-                  <Td className="text-sm hidden lg:flex">{student.age} </Td>
+                  <Td className="text-[0px] lg:text-sm">{student.age} </Td>
                   <Td>
                     {constructClassName(
                       (student.curClassId as ClassType).name,
                       (student.curClassId as ClassType).level,
                     )}
                   </Td>
-                  <Td className="text-sm hidden lg:flex">
+                  <Td className="text-[0px] lg:text-sm">
                     {(student.curSessionId as SessionType).session}
                   </Td>
                   <Td>{student.gender}</Td>

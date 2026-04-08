@@ -86,7 +86,7 @@ const SessionTerms = ({ session }: { session: SessionType }) => {
               <Tr>
                 <Th>Term</Th>
                 <Th>Start Date</Th>
-                <Th className="text-sm hidden lg:flex">End Date</Th>
+                <Th className="text-[0px] md:text-sm">End Date</Th>
                 <Th>Term Status</Th>
                 <Th>Actions</Th>
               </Tr>
@@ -96,7 +96,7 @@ const SessionTerms = ({ session }: { session: SessionType }) => {
                 <Tr key={term._id}>
                   <Td>{term?.term} Term</Td>
                   <Td>{formatDate(term?.startDate)}</Td>
-                  <Td className="text-sm hidden lg:flex">
+                  <Td className="text-[0px] md:text-sm">
                     {term?.endDate ? formatDate(term?.endDate) : "Not set"}
                   </Td>
                   <Td>

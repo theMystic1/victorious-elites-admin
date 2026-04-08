@@ -86,7 +86,7 @@ const ResultsTable = ({
               <Tr>
                 <Th className="text-xs mr-1">Reg No.</Th>
                 <Th className="text-xs mr-1">Name</Th>
-                <Th className="text-xs mr-1">Score</Th>
+                <Th className="text-xs mr-1">Average</Th>
                 <Th className="text-xs mr-1">Score</Th>
                 <Th className="text-xs mr-1">Position</Th>
                 {/*

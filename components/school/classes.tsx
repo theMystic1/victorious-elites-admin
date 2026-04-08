@@ -110,7 +110,7 @@ const Classes = () => {
                 <Th className="text-sm">Level</Th>
                 <Th className="text-sm">Class</Th>
                 <Th className="text-sm ">Sub Class</Th>
-                <Th className="text-sm hidden lg:flex">Class Status</Th>
+                <Th className="hidden md:flex">Class Status</Th>
                 <Th className="text-sm">Actions</Th>
               </Tr>
             </TableHeader>
@@ -131,18 +131,12 @@ const Classes = () => {
                     {constructLevel(cls?.level)}
                   </Td>
                   <Td className="text-xs lg:text-sm">
-                    {cls?.level === "PRIMARY" && cls?.name?.includes("P")
-                      ? `BASIC ${cls?.name?.split("")[1]}`
-                      : cls?.name === "PREKG"
-                        ? "PRE NURSERY"
-                        : cls?.level === "KG" && cls?.name.includes("KG")
-                          ? `NURSERY ${cls?.name.split("")[2]}`
-                          : cls?.name}
+                    {constructLevel(cls?.level)}
                   </Td>
                   <Td className="text-xs lg:text-sm">
                     {!cls?.arm || cls?.arm === "" ? "N/A" : cls?.arm}
                   </Td>
-                  <Td className="text-xs lg:text-sm hidden lg:flex">
+                  <Td className="text-[0px]! hidden md:flex">
                     <ActiveBadge
                       status={cls?.isActive ? "Active" : "Inactive"}
                     />
