@@ -71,10 +71,15 @@ const Students = () => {
 
       <StudentsModal
         fetchedClasses={fetchedClasses}
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          setIsEdit(false);
+        }}
         fetchedSessions={fetchedSessions}
-        open={open}
+        open={open || isEdit}
+        isEdit={isEdit}
         refetchStudents={refetchStudents}
+        editStudent={editStudent}
       />
     </div>
   );

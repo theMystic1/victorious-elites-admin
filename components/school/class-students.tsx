@@ -28,6 +28,7 @@ import { useState } from "react";
 import { CustomButton } from "../ui/reusables/custom-btn";
 import SearchableNativeSelect from "../ui/reusables/select";
 import Pagination from "../ui/reusables/pagination";
+import { constructClassName } from "@/lib/helpers/helper";
 
 const ClassStudents = ({ curClass }: { curClass: ClassType }) => {
   const [open, setOpen] = useState(false);
@@ -139,9 +140,9 @@ const ClassStudents = ({ curClass }: { curClass: ClassType }) => {
               <Tr>
                 <Th>Reg No.</Th>
                 <Th>Name</Th>
-                <Th>Age</Th>
+                <Th className="text-sm hidden lg:flex">Age</Th>
                 <Th>Class</Th>
-                <Th>Session</Th>
+                <Th className="text-sm hidden lg:flex">Session</Th>
                 <Th>Gender</Th>
                 {/*<Th>Actions</Th>*/}
               </Tr>
@@ -151,28 +152,16 @@ const ClassStudents = ({ curClass }: { curClass: ClassType }) => {
                 <Tr key={index}>
                   <Td>{student.studentsId}</Td>
                   <Td>{student.fullName}</Td>
-                  <Td>{student.age} </Td>
+                  <Td className="text-sm hidden lg:flex">{student.age} </Td>
                   <Td>
-                    {(student.curClassId as ClassType).level === "PRIMARY" &&
-                    (student.curClassId as ClassType).name
-                      ?.toLowerCase()
-                      .includes("p")
-                      ? `Basic ${(student.curClassId as ClassType).name.split("")[1]}`
-                      : (student.curClassId as ClassType).name === "PREKG"
-                        ? "Pre Nursery"
-                        : (student.curClassId as ClassType).name.includes("KG")
-                          ? `NURSERY ${(student.curClassId as ClassType)?.name.split("")[2]}`
-                          : (student.curClassId as ClassType)?.name}{" "}
-                    {(student.curClassId as ClassType)?.arm}
-                    {/*{cls?.level === "PRIMARY" && cls?.name?.includes("P")
-                      ? `BASIC ${cls?.name?.split("")[1]}`
-                      : cls?.name === "PREKG"
-                        ? "PRE NURSERY"
-                        : cls?.name.includes("KG")
-                          ? `NURSERY ${cls?.name.split("")[2]}`
-                          : cls?.name}*/}
+                    {constructClassName(
+                      (student.curClassId as ClassType).name,
+                      (student.curClassId as ClassType).level,
+                    )}
                   </Td>
-                  <Td>{(student.curSessionId as SessionType).session}</Td>
+                  <Td className="text-sm hidden lg:flex">
+                    {(student.curSessionId as SessionType).session}
+                  </Td>
                   <Td>{student.gender}</Td>
                   {/*<Td>
 

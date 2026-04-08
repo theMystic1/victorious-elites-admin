@@ -84,11 +84,11 @@ const ResultsTable = ({
           <Table>
             <TableHeader>
               <Tr>
-                <Th>Reg No.</Th>
-                <Th>Name</Th>
-                <Th>Average Score</Th>
-                <Th>Total Score</Th>
-                <Th>Class Position</Th>
+                <Th className="text-xs mr-1">Reg No.</Th>
+                <Th className="text-xs mr-1">Name</Th>
+                <Th className="text-xs mr-1">Score</Th>
+                <Th className="text-xs mr-1">Score</Th>
+                <Th className="text-xs mr-1">Position</Th>
                 {/*
                 <Th>Gender</Th>*/}
                 <Th>Actions</Th>

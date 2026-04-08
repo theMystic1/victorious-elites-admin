@@ -15,22 +15,42 @@ const TableOverflow = ({
 };
 
 const Table = ({ children }: { children?: React.ReactNode }) => {
-  return <table className="w-full h-full z-10">{children}</table>;
+  return <table className="w-full h-full z-10 min-150">{children}</table>;
 };
 
 const Tr = ({ children }: { children?: React.ReactNode }) => {
   return <tr className="">{children}</tr>;
 };
 
-const Th = ({ children }: { children?: React.ReactNode }) => {
+const Th = ({
+  children,
+  className,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) => {
   return (
-    <th className="text-start border-b border-b-gray-300 py-4">{children}</th>
+    <th
+      className={`text-start border-b border-b-gray-300 py-4 text-sm ${className}`}
+    >
+      {children}
+    </th>
   );
 };
 
-const Td = ({ children }: { children?: React.ReactNode }) => {
+const Td = ({
+  children,
+  className,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) => {
   return (
-    <td className="py-3  border-b border-b-gray-300 text-sm">{children}</td>
+    <td
+      className={`py-3  border-b border-b-gray-300 text-xs lg:text-sm ${className} `}
+    >
+      {children}
+    </td>
   );
 };
 

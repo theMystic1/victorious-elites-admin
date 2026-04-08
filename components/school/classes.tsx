@@ -64,7 +64,7 @@ const Classes = () => {
       <h1 className="text-xl font-black">Class Table</h1>
       <TableOverflow className="mt-6">
         <div className="flex items-center justify-between mb-4 ">
-          <Row className=" gap-2">
+          <Row className=" flex-col! lg:flex-row items-start lg:items-center gap-2">
             <h3 className="font-black md:text-nowrap">Filter by Level</h3>
             <InputContainer className="max-w-50">
               <SearchableNativeSelect
@@ -107,17 +107,17 @@ const Classes = () => {
           <Table>
             <TableHeader>
               <Tr>
-                <Th>Level</Th>
-                <Th>Class</Th>
-                <Th>Sub Class</Th>
-                <Th>Class Status</Th>
-                <Th>Actions</Th>
+                <Th className="text-sm">Level</Th>
+                <Th className="text-sm">Class</Th>
+                <Th className="text-sm ">Sub Class</Th>
+                <Th className="text-sm hidden lg:flex">Class Status</Th>
+                <Th className="text-sm">Actions</Th>
               </Tr>
             </TableHeader>
             <Tbody>
               {classes.map((cls, index) => (
                 <Tr key={cls._id}>
-                  <Td>
+                  <Td className="text-xs lg:text-sm">
                     {/*{cls?.level === "KG"
                       ? "NURSERY"
                       : cls?.level === "JS"
@@ -130,7 +130,7 @@ const Classes = () => {
 
                     {constructLevel(cls?.level)}
                   </Td>
-                  <Td>
+                  <Td className="text-xs lg:text-sm">
                     {cls?.level === "PRIMARY" && cls?.name?.includes("P")
                       ? `BASIC ${cls?.name?.split("")[1]}`
                       : cls?.name === "PREKG"
@@ -139,8 +139,10 @@ const Classes = () => {
                           ? `NURSERY ${cls?.name.split("")[2]}`
                           : cls?.name}
                   </Td>
-                  <Td>{!cls?.arm || cls?.arm === "" ? "N/A" : cls?.arm}</Td>
-                  <Td>
+                  <Td className="text-xs lg:text-sm">
+                    {!cls?.arm || cls?.arm === "" ? "N/A" : cls?.arm}
+                  </Td>
+                  <Td className="text-xs lg:text-sm hidden lg:flex">
                     <ActiveBadge
                       status={cls?.isActive ? "Active" : "Inactive"}
                     />

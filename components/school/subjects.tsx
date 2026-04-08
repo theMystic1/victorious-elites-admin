@@ -62,35 +62,37 @@ const Subjects = () => {
   return (
     <Cols className="gap-5 mt-6">
       <TableOverflow className="min-h-100 ">
-        <Row className="justify-between gap-4 mb-6">
+        <Row className="justify-between gap-4 mb-6 ">
           <h1>All Subjects</h1>
 
-          <div className="flex items-center gap-2">
-            <InputContainer>
-              <SearchableNativeSelect
-                options={[
-                  { value: "", label: "All" },
-                  ...fetchedClasses.map((cls) => ({
-                    value: cls._id!,
-                    label: `${constructClassName(cls.name, cls.level)} ${cls.arm}`,
-                    disabled: !cls.isActive,
-                  })),
-                ]}
-                value={selectedClass}
-                onChange={(value) => {
-                  setSelectedClass(value);
-                  updateQueryParams(value);
-                }}
-                placeholder="Select student class"
-                // className="input"
-              />
-            </InputContainer>
-          </div>
+          <div className="flex gap-2  flex-col md:items-center md:flex-row">
+            <div className="flex items-center gap-2">
+              <InputContainer>
+                <SearchableNativeSelect
+                  options={[
+                    { value: "", label: "All" },
+                    ...fetchedClasses.map((cls) => ({
+                      value: cls._id!,
+                      label: `${constructClassName(cls.name, cls.level)} ${cls.arm}`,
+                      disabled: !cls.isActive,
+                    })),
+                  ]}
+                  value={selectedClass}
+                  onChange={(value) => {
+                    setSelectedClass(value);
+                    updateQueryParams(value);
+                  }}
+                  placeholder="Select student class"
+                  // className="input"
+                />
+              </InputContainer>
+            </div>
 
-          <div>
-            <CustomButton onClick={() => setOpenModal(true)}>
-              + Add Subject
-            </CustomButton>
+            <div>
+              <CustomButton onClick={() => setOpenModal(true)}>
+                + Add Subject
+              </CustomButton>
+            </div>
           </div>
         </Row>
         {!fetchedSubjects?.length ? (
@@ -100,7 +102,7 @@ const Subjects = () => {
               description="No subjects exists in your school"
             />
 
-            <Row className="justify-center items-center ">
+            <Row className="justify-center items-center  ">
               <CustomButton onClick={() => setOpenModal(true)}>
                 + Add Subject
               </CustomButton>

@@ -78,10 +78,10 @@ const StudentsTable = ({
   return (
     <TableOverflow>
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-black">
+        <h1 className="lg:text-xl  font-black">
           {type === "students" ? "Students Table" : "Student's Result table"}
         </h1>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row items-center gap-2">
           <InputContainer>
             <SearchableNativeSelect
               options={[
@@ -122,10 +122,10 @@ const StudentsTable = ({
             <Tr>
               <Th>Reg No.</Th>
               <Th>Name</Th>
-              <Th>Age</Th>
+              <Th className="hidden md:flex">Age</Th>
               <Th>Class</Th>
-              <Th>Session</Th>
-              <Th>Gender</Th>
+              <Th className="hidden md:flex">Session</Th>
+              <Th className="hidden md:flex">Gender</Th>
               <Th>Actions</Th>
             </Tr>
           </TableHeader>
@@ -134,13 +134,15 @@ const StudentsTable = ({
               <Tr key={index}>
                 <Td>{student.studentsId}</Td>
                 <Td>{student.fullName}</Td>
-                <Td>{student.age} </Td>
+                <Td className="hidden md:flex">{student.age} </Td>
                 <Td>
                   {`${constructClassName((student.curClassId as ClassType).name, (student.curClassId as ClassType).level)}
                  ${(student.curClassId as ClassType)?.arm}`}
                 </Td>
-                <Td>{(student.curSessionId as SessionType).session}</Td>
-                <Td>{student.gender}</Td>
+                <Td className="hidden md:flex">
+                  {(student.curSessionId as SessionType).session}
+                </Td>
+                <Td className="hidden md:flex">{student.gender}</Td>
                 <Td>
                   {/*<div>
                   <button className="btn">

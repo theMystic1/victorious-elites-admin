@@ -41,9 +41,7 @@ const SubjectClasses = () => {
     <Cols>
       <TableOverflow>
         <Row className="justify-between gap-4 mb-5">
-          <h1 className="font-black text-xl">
-            Classes that offer this subject
-          </h1>
+          <h1 className="font-black md:text-xl">Class subjects</h1>
           <div>
             <CustomButton onClick={handleOpen}>+ Add Class</CustomButton>
           </div>

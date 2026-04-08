@@ -74,20 +74,24 @@ const Sessions = () => {
           <Table>
             <TableHeader>
               <Tr>
-                <Th>Session</Th>
-                <Th>Start Date</Th>
-                <Th>End Date</Th>
-                <Th>Session Status</Th>
-                <Th>Actions</Th>
+                <Th className="text-sm">Session</Th>
+                <Th className="text-sm">Start Date</Th>
+                <Th className="text-sm hidden md:flex">End Date</Th>
+                <Th className="text-sm">Session Status</Th>
+                <Th className="text-sm">Actions</Th>
               </Tr>
             </TableHeader>
             <Tbody>
               {sessions.map((session, index) => (
                 <Tr key={session._id}>
-                  <Td>{session?.session}</Td>
-                  <Td>{formatDate(session?.startDate)}</Td>
-                  <Td>{formatDate(session?.endDate)}</Td>
-                  <Td>
+                  <Td className="text-xs  md:text-sm">{session?.session}</Td>
+                  <Td className="text-xs md:text-sm">
+                    {formatDate(session?.startDate)}
+                  </Td>
+                  <Td className="text-xs  md:text-sm hidden md:flex">
+                    {formatDate(session?.endDate)}
+                  </Td>
+                  <Td className="text-xs  md:text-sm">
                     <ActiveBadge
                       status={session?.isActive ? "Active" : "Inactive"}
                     />

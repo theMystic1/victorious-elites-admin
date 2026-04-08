@@ -6,7 +6,7 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 
 import { Box } from "../students/single-student";
 import { Cols, Row } from "../ui/reusables/cols-rows";
@@ -338,9 +338,9 @@ const ResultCompute = ({
   // console.log(resultsData);
 
   return (
-    <Cols className="gap-3">
-      <Box>
-        <Row className="justify-between">
+    <Cols className="gap-3 ">
+      <Box className="">
+        <Row className="flex-col! lg:justify-between lg:flex-row! gap-3">
           <Cols className="gap-1">
             <h1 className="font-black text-xl">Compute student's result</h1>
             <p className="text-sm">
@@ -349,7 +349,7 @@ const ResultCompute = ({
             </p>
           </Cols>
 
-          <Row className="gap-3">
+          <Row className="gap-3 ">
             <Row className="gap-2">
               <p className="font-bold">Session</p>
               <InputContainer className="max-w-56">
@@ -391,9 +391,9 @@ const ResultCompute = ({
           </Row>
         </Row>
 
-        <TableOverflow className="h-full">
+        <TableOverflow className="h-full w-full ">
           {arr.length > 0 && (
-            <div className="max-w-50 mb-4">
+            <div className="max-w-50 mb-4 ">
               <CustomButton onClick={handleComputeResult} disabled={isLoading}>
                 {isLoading ? "Computing Score...." : "Compute"}
               </CustomButton>
@@ -406,7 +406,7 @@ const ResultCompute = ({
               description="No subjects has been registered under this class yet"
             />
           ) : (
-            <>
+            <div className="min-w-250! ">
               <div className="grid grid-cols-[1fr_80px_80px_80px_80px_150px_80px_80px_0.8fr] border border-gray-200 gap-0 rounded">
                 {gridHeads.map((head) => (
                   <div
@@ -429,7 +429,7 @@ const ResultCompute = ({
                   return (
                     <div
                       key={classSubjectId}
-                      className="grid grid-cols-[1fr_80px_80px_80px_80px_150px_80px_80px_0.8fr] border border-gray-200 gap-0 rounded"
+                      className="grid grid-cols-[1fr_80px_80px_80px_80px_150px_80px_80px_0.8fr]  border border-gray-200 gap-0 rounded"
                     >
                       <div className="p-2 border border-gray-400">
                         {s.subjectId?.name ?? s.name ?? "Subject"}
@@ -519,7 +519,7 @@ const ResultCompute = ({
                   );
                 })}
               </div>
-            </>
+            </div>
           )}
 
           <RateStudent
