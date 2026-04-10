@@ -44,7 +44,7 @@ const ProtectedDashboardWrapper = ({
         <div
           className={`z-50 bg-white lg:hidden fixed top-0 bottom-0 transition-all duration-300 w-56 p-3  ${open ? "translate-x-0 left-0" : "-translate-x-1000"}`}
         >
-          <button className="lg:hidden z-100" onClick={handleOpen}>
+          <button className="lg:hidden z-100 mt-8" onClick={handleOpen}>
             <CgClose size={20} className="font-black" />
           </button>
           <NavItems onOpenModal={handleOpen} />

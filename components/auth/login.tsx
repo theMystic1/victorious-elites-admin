@@ -40,8 +40,10 @@ const Login = () => {
       }
 
       if (res?.data?.user?.isActive === false) {
+        router.refresh();
         router.push("/changePassword");
       } else {
+        router.refresh();
         router.push("/");
       }
     } catch (error: any) {

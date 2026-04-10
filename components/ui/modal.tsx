@@ -69,7 +69,7 @@ const Modal = ({
       />
 
       <div
-        className={`relative w-full ${maxWidthClassName} rounded-xl  p-6 shadow-xl border border-white/10 ${className} bg-white min-w-100 z-9999`}
+        className={`relative w-full ${maxWidthClassName} rounded-xl  p-6 shadow-xl border border-white/10 ${className} bg-white min-w-80 z-9999`}
       >
         <div className="flex items-start justify-between gap-3 w-full">
           <div className="min-w-full">

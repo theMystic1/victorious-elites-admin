@@ -36,7 +36,7 @@ export const NavItems = ({ onOpenModal }: { onOpenModal?: () => void }) => {
 
   return (
     <Cols className="justify-between h-full">
-      <Cols>
+      <Cols className="gap-4">
         <div className="flex flex-col items-center gap-0 lg:mb-12 sticky  max-w-56">
           <Logo size="md" />
           <h2 className="text-xl font-black">Victorious Elites</h2>
@@ -57,7 +57,7 @@ export const NavItems = ({ onOpenModal }: { onOpenModal?: () => void }) => {
 
       <CustomButton
         variant="danger"
-        className="w-40 flex items-center gap-2"
+        className="w-40  mb-20 lg:mb-0 flex items-center gap-2"
         onClick={handleLogout}
       >
         <GrLogout />
