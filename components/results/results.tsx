@@ -123,7 +123,7 @@ const Results = () => {
       classId: selectedClassId,
     });
 
-  console.log(resulttClassesData);
+  // console.log(resulttClassesData);
 
   // Loading states
   if (isLoadingSession)

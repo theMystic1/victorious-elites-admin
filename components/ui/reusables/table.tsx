@@ -15,7 +15,7 @@ const TableOverflow = ({
 };
 
 const Table = ({ children }: { children?: React.ReactNode }) => {
-  return <table className="w-full h-full z-10 min-150">{children}</table>;
+  return <table className="w-full h-full z-10 min-150 mb-12">{children}</table>;
 };
 
 const Tr = ({ children }: { children?: React.ReactNode }) => {

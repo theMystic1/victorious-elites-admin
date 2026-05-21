@@ -16,7 +16,7 @@ import { BiMenu } from "react-icons/bi";
 
 export const DashboardNav = () => {
   return (
-    <aside className="w-full flex flex-col gap-4 fixed left-0 top-0 bottom-0  py-8 px-3">
+    <aside className="w-60 flex flex-col gap-4 fixed left-0 top-0 bottom-0  py-8 px-3 bg-white border-r border-r-gray-100 h-screen z-10">
       <NavItems />
     </aside>
   );
@@ -57,7 +57,7 @@ export const NavItems = ({ onOpenModal }: { onOpenModal?: () => void }) => {
 
       <CustomButton
         variant="danger"
-        className="w-40  mb-20 lg:mb-0 flex items-center gap-2"
+        className="w-40   mb-20 lg:mb-0 flex items-center gap-2"
         onClick={handleLogout}
       >
         <GrLogout />
@@ -77,10 +77,10 @@ export const TopNav = ({
   const { me } = useMe();
 
   return (
-    <nav className="w-full flex items-center justify-between py-4 lg:px-3 sticky inset-x-0 top-0 bg-white z-10 border-b border-b-gray-300 h-24">
+    <nav className="w-full flex items-center justify-between py-4 lg:px-3 sticky inset-x-0 top-0 bg-white z-100 border-b border-b-gray-300 h-24">
       <div className="flex items-center justify-between gap-4 w-full px-5">
         <Row className="gap-2">
-          <button className="lg:hidden z-[100]" onClick={onOpenModal}>
+          <button className="lg:hidden z-100" onClick={onOpenModal}>
             <BiMenu size={20} className="font-black" />
           </button>
           <h2 className="lg:text-2xl font-bold">Welcome, Victorious </h2>
